@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fa726484aff549c4a4b4170c98b0bd47" Name="Diagram1" >
+        <EntityTypeShape EntityType="MyUsers.User" Width="1.5" PointX="2.875" PointY="3.5" />
+        <EntityTypeShape EntityType="MyUsers.Device" Width="1.5" PointX="5.625" PointY="4" />
+        <EntityTypeShape EntityType="MyUsers.TimeState" Width="1.5" PointX="8.625" PointY="4" />
+        <AssociationConnector Association="MyUsers.DeviceUser" />
+        <AssociationConnector Association="MyUsers.TimeStateDevice" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

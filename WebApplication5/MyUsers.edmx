@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MyUsers.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="MyUsersStoreContainer">
+    <EntitySet Name="Users" EntityType="MyUsers.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Devices" EntityType="MyUsers.Store.Devices" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TimeStates" EntityType="MyUsers.Store.TimeStates" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="DeviceUser" Association="MyUsers.Store.DeviceUser">
+      <End Role="Device" EntitySet="Devices" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="TimeStateDevice" Association="MyUsers.Store.TimeStateDevice">
+      <End Role="TimeState" EntitySet="TimeStates" />
+      <End Role="Device" EntitySet="Devices" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="login" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="password" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Devices">
+    <Key>
+      <PropertyRef Name="device_id" />
+    </Key>
+    <Property Name="device_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="type" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TimeStates">
+    <Key>
+      <PropertyRef Name="timestate_id" />
+    </Key>
+    <Property Name="timestate_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="time" Type="datetime" Nullable="false" />
+    <Property Name="state" Type="bit" Nullable="false" />
+    <Property Name="device_id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="DeviceUser">
+    <End Role="Device" Type="MyUsers.Store.Devices" Multiplicity="*" />
+    <End Role="User" Type="MyUsers.Store.Users" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Device">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TimeStateDevice">
+    <End Role="TimeState" Type="MyUsers.Store.TimeStates" Multiplicity="*" />
+    <End Role="Device" Type="MyUsers.Store.Devices" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Device">
+        <PropertyRef Name="device_id" />
+      </Principal>
+      <Dependent Role="TimeState">
+        <PropertyRef Name="device_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="MyUsers" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="MyUsersContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Users" EntityType="MyUsers.User" />
+          <EntitySet Name="Devices" EntityType="MyUsers.Device" />
+          <EntitySet Name="TimeStates" EntityType="MyUsers.TimeState" />
+          <AssociationSet Name="DeviceUser" Association="MyUsers.DeviceUser">
+            <End Role="Device" EntitySet="Devices" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="TimeStateDevice" Association="MyUsers.TimeStateDevice">
+            <End Role="TimeState" EntitySet="TimeStates" />
+            <End Role="Device" EntitySet="Devices" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <Property Name="address" Type="String" Nullable="false" />
+          <Property Name="login" Type="String" Nullable="false" />
+          <Property Name="password" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Device">
+          <Key>
+            <PropertyRef Name="device_id" />
+          </Key>
+          <Property Name="device_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="type" Type="String" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="MyUsers.DeviceUser" FromRole="Device" ToRole="User" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TimeState">
+          <Key>
+            <PropertyRef Name="timestate_id" />
+          </Key>
+          <Property Name="timestate_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="time" Type="DateTime" Nullable="false" />
+          <Property Name="state" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Device" Relationship="MyUsers.TimeStateDevice" FromRole="TimeState" ToRole="Device" />
+          <Property Name="device_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="DeviceUser">
+          <End Type="MyUsers.Device" Role="Device" Multiplicity="*" />
+          <End Type="MyUsers.User" Role="User" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="Device">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TimeStateDevice">
+          <End Type="MyUsers.TimeState" Role="TimeState" Multiplicity="*" />
+          <End Type="MyUsers.Device" Role="Device" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Device">
+              <PropertyRef Name="device_id" />
+            </Principal>
+            <Dependent Role="TimeState">
+              <PropertyRef Name="device_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MyUsersStoreContainer" CdmEntityContainer="MyUsersContainer">
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(MyUsers.User)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="login" ColumnName="login" />
+          <ScalarProperty Name="password" ColumnName="password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Devices">
+      <EntityTypeMapping TypeName="IsTypeOf(MyUsers.Device)">
+        <MappingFragment StoreEntitySet="Devices">
+          <ScalarProperty Name="device_id" ColumnName="device_id" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimeStates">
+      <EntityTypeMapping TypeName="IsTypeOf(MyUsers.TimeState)">
+        <MappingFragment StoreEntitySet="TimeStates">
+          <ScalarProperty Name="timestate_id" ColumnName="timestate_id" />
+          <ScalarProperty Name="time" ColumnName="time" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="device_id" ColumnName="device_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
